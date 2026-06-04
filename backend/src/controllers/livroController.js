@@ -30,11 +30,11 @@ class LivrosController{
     async storeLivros(req, res){
         const {titulo, autor, ano_publicacao, preco} = req.body;
  
-        if(!titulo || !autor || !ano_publicacao || !preco){
-            return res.json({
-                message:"Todos os campos são obrigatorios"
-            });
-        }
+        // if(!titulo || !autor || !ano_publicacao || !preco){
+        //     return res.json({
+        //         message:"Todos os campos são obrigatorios"
+        //     });
+        // }
  
         const [findTitulo] = await livrosModel.getlivrosBytitle(titulo);
  

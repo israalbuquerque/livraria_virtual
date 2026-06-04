@@ -31,9 +31,9 @@ class ClientesController {
   async storeCliente(req, res) {
     const { nome, email, telefone, cidade, estado } = req.body;
 
-    if (nome === "" || !email || !telefone || !cidade || !estado) {
-      return res.json({ message: "Todos os campos são obrigatorios" });
-    }
+    // if (nome === "" || !email || !telefone || !cidade || !estado) {
+    //   return res.json({ message: "Todos os campos são obrigatorios" });
+    // }
 
     const [findEmail]  = await clientesModel.getClientesByEmail(email);
 

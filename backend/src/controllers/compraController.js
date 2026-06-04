@@ -53,11 +53,11 @@ class CompraController{
         const id = Number(req.params.id);
         const {quantidade, valor, desconto} = req.body;
  
-        if(!quantidade || !valor || !desconto){
-            return res.json({
-                message: "Todos os campos são obrigatorios!"
-            });
-        }
+        // if(!quantidade || !valor || !desconto){
+        //     return res.json({
+        //         message: "Todos os campos são obrigatorios!"
+        //     });
+        // }
  
         const [findId] = await comprasModal.getComprasById(id);
  

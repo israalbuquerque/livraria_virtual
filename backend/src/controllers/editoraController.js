@@ -32,11 +32,11 @@ class EditorasController{
     async storeEditora(req, res){
         const {nome, email, telefone} = req.body;
  
-        if (!nome || !email || !telefone){
-            return res.json({
-                message: "Todos os campos são obrigatorios!"
-            });
-        }
+        // if (!nome || !email || !telefone){
+        //     return res.json({
+        //         message: "Todos os campos são obrigatorios!"
+        //     });
+        // }
  
         const [findNome] = await editoraModel.getEditorasByname(nome);
  

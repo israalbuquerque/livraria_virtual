@@ -29,11 +29,11 @@ class CategoriaController{
     async storeCategoria(req, res){
         const{categoria} = req.body;
  
-        if(!categoria){
-            return res.json({
-                message: "Campo obrigatorio!"
-            });
-        }
+        // if(!categoria){
+        //     return res.json({
+        //         message: "Campo obrigatorio!"
+        //     });
+        // }
  
         const findcategoria = await categoriaModel.getCategoriasByName(categoria);
  
