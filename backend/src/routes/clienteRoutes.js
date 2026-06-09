@@ -8,7 +8,7 @@ const routeClientes = express.Router();
 routeClientes.get("/", clientesController.getAllClientes);
 routeClientes.get("/:email", clientesController.getClientesByEmail);
 routeClientes.post("/", validateCliente, clientesController.storeCliente);
-routeClientes.put("/:id", clientesController.updateClienteById);
+routeClientes.put("/:id", validateCliente, clientesController.updateClienteById);
 routeClientes.delete("/:id", clientesController.removeCliente);
 // routeClientes.get("/email/:email", clientesController.getClientesByEmail);
 

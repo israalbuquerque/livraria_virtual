@@ -7,10 +7,10 @@ class ClientesModel{
         return rows;
     }
 
-    async getClientesByEmail(email){
+    async getClientesByEmail(email, id = 0){
         const [row] = await  pool.execute(
-            "SELECT * FROM clientes WHERE email = ?;",
-            [email]
+            "SELECT * FROM clientes WHERE email = ? AND id_cliente != ?;",
+            [email, id]
         );
         return row;
     }

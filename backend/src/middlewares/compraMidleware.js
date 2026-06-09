@@ -1,43 +1,42 @@
-const validateCompras = (req, res, next) => {
-    const {qtde, valor, desconto, id_livro, id_cliente} = req.body;
+const validateCompra = (req, res, next) => {
+    const { qtde, valor, desconto, id_livro, id_cliente } = req.body;
     const errors = [];
-
-    if(!qtde || qtde.trim() ===""){
-        errors.push("O campo quantidade é obrigatorio!")
-    }else if(qtde.trim().length > 100){
-        errors.push("O campo quantidade deve ter no maximo 100 caracteres.")
+  
+    if (qtde === undefined || qtde === "") {
+      errors.push("O campo qtde é obrigatório.");
+    } else if (!Number.isInteger(Number(qtde)) || Number(qtde) <= 0) {
+      errors.push("O campo qtde deve ser um número inteiro positivo.");
     }
-
-    if(!valor || valor.trim() === ""){
-        errors.push("O campo valor é obrigatorio!")
-    }else if(valor.trim().length > 1000000){
-        errors.push("O campo valor pode ter o maximo 1000000 caracteres")
+  
+    if (valor === undefined || valor === "") {
+      errors.push("O campo valor é obrigatório.");
+    } else if (isNaN(Number(valor)) || Number(valor) < 0) {
+      errors.push("O campo valor deve ser um número positivo.");
     }
-
-    if(!desconto || desconto.trim() === ""){
-        errors.push("O campo desconto é obrigatorio!")
-    }else if(desconto.trim().length > 1000000){
-        errors.push("O campo desconto pode ter o maximo 1000000 caracteres")
+  
+    if (desconto !== undefined && desconto !== "") {
+      if (isNaN(Number(desconto)) || Number(desconto) < 0) {
+        errors.push("O campo desconto deve ser um número positivo ou zero.");
+      }
     }
-
-    if(!id_livro || id_livro.trim() === ""){
-        errors.push("O campo valor é obrigatorio!")
-    }else if(id_livro.trim().length > 1000000){
-        errors.push("O campo id_livro pode ter o maximo 1000000 caracteres")
+  
+    if (!id_livro) {
+      errors.push("O campo id_livro é obrigatório.");
+    } else if (!Number.isInteger(Number(id_livro)) || Number(id_livro) <= 0) {
+      errors.push("O campo id_livro deve ser um número inteiro positivo.");
     }
-
-    if(!id_cliente || id_cliente.trim() === ""){
-        errors.push("O campo valor é obrigatorio!")
-    }else if(id_cliente.trim().length > 1000000){
-        errors.push("O campo id_cliente pode ter o maximo 1000000 caracteres")
+  
+    if (!id_cliente) {
+      errors.push("O campo id_cliente é obrigatório.");
+    } else if (!Number.isInteger(Number(id_cliente)) || Number(id_cliente) <= 0) {
+      errors.push("O campo id_cliente deve ser um número inteiro positivo.");
     }
-
-    if (errors.length > 0 ){
-        return res.status(400).json({errors});
+  
+    if (errors.length > 0) {
+      return res.status(400).json({ errors });
     }
-
+  
     next();
-
-}
-
-export default validateCompras;
+  };
+  
+  export default validateCompra;

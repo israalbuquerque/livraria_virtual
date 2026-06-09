@@ -35,9 +35,12 @@ class ClientesController {
     //   return res.json({ message: "Todos os campos são obrigatorios" });
     // }
 
-    const [findEmail]  = await clientesModel.getClientesByEmail(email);
 
-    if (findEmail?.email === email) {
+
+    //try{
+    const [findEmail]  = await clientesModel.getClientesByEmail(req.body.email);
+
+    if (findEmail) {
       return res.json({
         message: "E-mail já cadastrado com outro cliente!",
       });
@@ -45,18 +48,24 @@ class ClientesController {
 
     const createCliente = await clientesModel.createCliente(req.body);
 
-    if (createCliente.affectedRows === 0) {
+    if (createCliente.affectedRows > 0) {
       return res.json({
-        message: "Não foi possível realizar o cadastro!",
+        message: " Cadastro realizado com sucesso!",
       });
     }
 
     return res.json({
-      message: "Cadastro realizado com sucesso!",
+      message: "Não foi possível realizar o cadastro! ",
     });
+
+    // // cat (error){
+    // //   return res.status(500).json({message: "Erro ao cadastrar cliente"})
+    // }
   }
 
   async updateClienteById(req, res) {
+
+    
     const id = Number(req.params.id); //req.params para pegar os dados da rota
     const { nome, email, telefone, cidade, estado } = req.body;
 
@@ -64,24 +73,24 @@ class ClientesController {
       return res.json({ message: "Todos os campos são obrigatorios" });
     }
 
-    const [findEmail] = await clientesModel.getClientesByEmail(email);
+    const [findEmail] = await clientesModel.getClientesByEmail(req.body.email);
 
-    if (findEmail?.email === email) {
-      return res.json({
+    if (findEmail) {
+      return res.status(409).json({
         message: "E-mail já cadastrado!",
       });
     }
 
     const updateCliente = await clientesModel.updateCliente(id, req.body);
 
-    if (updateCliente.affectedRows === 0) {
+    if (updateCliente.affectedRows > 0) {
       return res.json({
-        message: "Não foi possível realizar a atualização!",
+        message: "Cliente atualizado com sucesso!",
       });
     }
 
     return res.json({
-      message: "Cliente atualizado com sucesso!",
+      message: " Não foi possível realizar a atualização!",
     });
   }
 
