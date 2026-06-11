@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
 
 class UserController {
@@ -20,9 +21,9 @@ class UserController {
 
     async getUserById(req, res){
         try{
-            const {id} = req.params;
+            const {user_id} = req.params;
 
-            const userById = await userModel.selectUserById(id);
+            const userById = await userModel.selectUserById(user_id);
 
             if(userById.length === 0){
                 return res.status(404).json({
@@ -46,9 +47,9 @@ class UserController {
 
             const [userByEmail] = await userModel.selectUserByEmail(user_email);
 
-            if(userByEmail){
-                return res.status(400).json({
-                    error: "Este email ja esta cadastrado no sistema!"
+            if(!userByEmail){
+                return res.status(404).json({
+                    error: "O usuário não encontrado!"
                 })
             }
 
@@ -57,7 +58,7 @@ class UserController {
 
         }catch(err){
             return res.status(500).json({
-                error: "Erro oa buscar usuário por email!"
+                error: "Erro ao buscar usuário por email!"
             })
 
         }
@@ -66,6 +67,8 @@ class UserController {
     async createUser(req, res){
 
         try {
+
+            const{user_name, user_email, user_password, user_phone, role_id, user_status}= req.body;
             const [existeUser] = await userModel.selectUserByEmail(req.body.user_email);
 
 
@@ -74,7 +77,11 @@ class UserController {
                     error: "Esta email já está casdastro no sistema!"
                 })
             }
-            const newUser = await  userModel.insertUser(req.body);
+
+            const hashedPasswod = await bcrypt.hash(user_password, 10)
+            const newUser = await  userModel.insertUser({
+                user_name, user_email, user_password: hashedPasswod, user_phone, role_id, user_status
+            });
 
             if(newUser.affectedRows > 0 ){
                 return res.status(200).json({
@@ -92,7 +99,76 @@ class UserController {
     }
 
     async updateUser(req, res){
+        try {
+            const {user_id} = req.params;
+
+            const{user_name, user_email, user_password, user_phone, role_id, user_status} = req.body;
+
+            const [existeUser] = await userModel.selectUserByEmail(user_email, user_id);
+
+
+            if(existeUser){
+                return res.status(400).json({
+                    error: "Esta email já está casdastro no sistema!"
+                })
+            }
+
+            const [existsPassword] = await userModel.selectUserById(user_id)
+            
+            if(user_password){
+                
+                const comperingPassword = await bcrypt.compare(user_password, existsPassword.user_password)
+
+                if(comperingPassword){
+                    const result =  await userModel.updateUser(user_id, req.body);
+
+                    if(result.affectedRows > 0 ){
+                    return res.status(200).json({
+                    success: "Usuário atualizado com sucesso!"
+                })
+            }
+                }
+
+                const hashedPasswod = await bcrypt.hash(user_password, 10);
+
+            const result = await userModel.updateUser(user_id, {
+                user_name, user_email, user_password: hashedPasswod, user_phone, role_id, user_status
+            }) 
+
+            if(result.affectedRows > 0){
+                return res.status(200).json({
+                    success: "Usuário atualizado com sucesso!"
+                })
+            }
+            }
+
+        } catch (error) {
+            return res.status(500).json({
+                error: "Erro ao atualizar usuário!"
+            })
+        }
         
     }
+
+    async deleteUser(req, res){
+        try {
+            const {user_id} = req.params;
+            const result = await userModel.deleteUser(user_id); 
+            if(result.affectedRows > 0){
+                return res.status(201).json({
+                    success: "Usuário deletado com sucesso!"
+                })
+            }
+
+        } catch (error) {
+            return res.status(500).json({
+                error: "Erro ao deletar usuário!"
+            })
+        }
+    }
+
+
 }
+
+export default new UserController();
 
