@@ -37,9 +37,9 @@ class UserModel{
         const query = `update users set 
             user_name = ?,
             user_email = ?,
-            user_password = ?
-            user_phone = ? 
-            role_id = ?
+            user_password = ?,
+            user_phone = ? ,
+            role_id = ?,
             user_status =?
             where user_id = ?`
 
@@ -51,7 +51,7 @@ class UserModel{
     };
     async deleteUser(id){
         const query = `delete from users where user_id = ? ; `;
-        const [result] = pool.execute(query [id]);
+        const [result] = await pool.execute(query, [id]);
         return result;
     }
 

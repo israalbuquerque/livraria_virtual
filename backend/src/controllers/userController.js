@@ -115,12 +115,14 @@ class UserController {
 
             const [existsPassword] = await userModel.selectUserById(user_id)
             
-            if(user_password){
+            if(existsPassword){
                 
                 const comperingPassword = await bcrypt.compare(user_password, existsPassword.user_password)
 
                 if(comperingPassword){
-                    const result =  await userModel.updateUser(user_id, req.body);
+                    const result =  await userModel.updateUser(user_id, {
+                user_name, user_email, user_password: existsPassword.user_password, user_phone, role_id, user_status
+            });
 
                     if(result.affectedRows > 0 ){
                     return res.status(200).json({
