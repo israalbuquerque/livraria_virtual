@@ -1,5 +1,13 @@
 use bd_livrariaonline;
 
+CREATE TABLE tokens (
+    token_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    token TEXT NOT NULL,
+    expires_at DATETIME NOT NULL,
+    Foreign Key (user_id) REFERENCES users(user_id) ON  DELETE CASCADE
+);
+
 DESCRIBE editoras;
 SHOW CREATE TABLE livros;
 
@@ -58,6 +66,8 @@ create table users (
 		on update current_timestamp,
 	foreign key (role_id) references roles (role_id)
 );
+
+
 
 insert into roles (role_name) 
 values ("clientes"), ("vendedor"), ("gerente"), ("admin");
