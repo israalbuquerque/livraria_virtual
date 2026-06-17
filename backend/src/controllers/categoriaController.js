@@ -1,6 +1,6 @@
 import categoriaModel from "../models/categoriaModel.js";
  
-class CategoriaController{
+ class CategoriaController{
     async getAllCategorias (req, res){
         const allCategorias = await categoriaModel.showCategorias();
         if(allCategorias.length === 0 ){
