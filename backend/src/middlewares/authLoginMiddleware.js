@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const authenticationToken = (req, res, next)=>{
-    const getToken = req.headers.Authorization;
+    const getToken = req.headers.authorization;
     const bearerToken = getToken.split(" ")[1];
 
     if (!bearerToken) {
