@@ -93,8 +93,29 @@ class AuthLoginController{
                 const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)//+7 dias
 
                 const savedToken = await tokenModel.createToken({
-                    user_id
+                    //user_id: userData.user_id,
+                    user_id: userData.id,
+                    token: newRefreshToken,
+                    expires_at: expiresAt,
                 });
+
+                if (savedToken.affectedRows === 0 ) {
+                    return res.status(500).json({
+                        error: "Error ao cadastrar o token"
+                    });
+                }
+
+                res.cookie("refreshToken", newRefreshToken,{
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: "strict",
+                    maxAge: expiresAt
+                });
+
+                return res.status(200).json({
+                    success: "Sessão atualizada com sucesso!",
+                    acccessToken
+                })
             }
         )
         ////////////////////////////////////////
