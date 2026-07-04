@@ -1,0 +1,132 @@
+<!-- <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montalook - Três Imagens</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 40px;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: inline-block;
+            max-width: 600px;
+            width: 100%;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #e91e63;
+        }
+        .vitrine-imagens {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .vitrine-imagens img {
+            max-width: 30%;
+            min-width: 150px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .erro {
+            color: red;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+ 
+    <div class="container">
+        <h2>Montalook 👗</h2>
+        <p>Escolha as 3 opções para montar a combinação:</p>
+ 
+        <select id="filtro1">
+            <option value="1">Cotidiano</option>
+            <option value="2">Trabalho</option>
+            <option value="3">Encontro</option>
+            <option value="4">Festa/Balada</option>
+        </select>
+
+        <select id="filtro2">
+            <option value="5">Manhã</option>
+            <option value="6">Tarde</option>
+            <option value="7">Noite</option>
+        </select>
+
+        <select id="filtro3">
+            <option value="8">Elegante</option>
+            <option value="9">Moderno</option>
+            <option value="10">Despojado</option>
+            <option value="11">Clean</option>
+        </select>
+ 
+        <button onclick="buscarCombinacao()">Buscar Look Perfeito</button>
+ 
+        <div id="mensagemErro" class="erro"></div>
+        <div id="containerImagens" class="vitrine-imagens"></div>
+    </div>
+ 
+    <script>
+        async function buscarCombinacao() {
+            const f1 = document.getElementById("filtro1").value;
+            const f2 = document.getElementById("filtro2").value;
+            const f3 = document.getElementById("filtro3").value;
+ 
+            const container = document.getElementById("containerImagens");
+            const erroElement = document.getElementById("mensagemErro");
+ 
+            container.innerHTML = "";
+            erroElement.innerText = "";
+ 
+            try {
+                const urlBackend = `http://localhost:3001/looks/recomendar?f1=${f1}&f2=${f2}&f3=${f3}`;
+                const response = await fetch(urlBackend);
+ 
+                if (!response.ok) {
+                    throw new Error("Nenhum look ou combinação encontrada.");
+                }
+ 
+                const dados = await response.json();
+                const URL_SERVIDOR = "http://localhost:3001";
+ 
+                dados.forEach(item => {
+                    const novaTagImg = document.createElement("img");
+                    novaTagImg.src = URL_SERVIDOR + item.caminho_imagem;
+                    novaTagImg.alt = "Peça do Look";
+                    container.appendChild(novaTagImg);
+                });
+ 
+            } catch (error) {
+                erroElement.innerText = error.message;
+            }
+        }
+    </script>
+ 
+</body>
+</html> -->
+
+

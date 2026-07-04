@@ -32,6 +32,8 @@ ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 
+
+
 SHOW CREATE TABLE compras;
 
 ALTER TABLE compras
@@ -67,6 +69,19 @@ create table users (
 	foreign key (role_id) references roles (role_id)
 );
 
+create table endereco(
+    endereco_id INT AUTO_INCREMENT PRIMARY key,
+    id_cliente int not null,
+    logradouro VARCHAR(255) not NULL,
+    numero VARCHAR(20) not null,
+    complemento VARCHAR(255),
+    bairro VARCHAR (255) not null,
+    cidade VARCHAR(255) not null,
+    estado VARCHAR(20) not null,
+    cep VARCHAR(20) not null,
+    Foreign Key (id_cliente) REFERENCES clientes(id_cliente) on delete cascade
+
+);
 
 
 insert into roles (role_name) 
@@ -79,6 +94,8 @@ values ("Joao Oliveira", "joao_oliveira@gmail.com", "123456", "123456789", 1),
 		("Maria Oliva", "Maria_oliva@gmail.com", "127894", "123456789", 4);
         
 select * from users;
+
+select * from endereco;
 
 
 
