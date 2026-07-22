@@ -8,10 +8,10 @@ import { authenticationToken , adminRole} from "../middlewares/authLoginMiddlewa
 const routeClientes = express.Router();
 
 routeClientes.get("/",authenticationToken, adminRole("admin ","vendedor", "gerente"), clientesController.getAllClientes);
-routeClientes.get("/:email", clientesController.getClientesByEmail);
-routeClientes.post("/", validateCliente, clientesController.storeCliente);
-routeClientes.put("/:id", validateCliente, clientesController.updateClienteById);
-routeClientes.delete("/:id", clientesController.removeCliente);
+routeClientes.get("/:email", authenticationToken, adminRole("admin ","vendedor", "gerente"), clientesController.getClientesByEmail);
+routeClientes.post("/",  authenticationToken, adminRole("admin ","vendedor", "gerente"), validateCliente, clientesController.storeCliente);
+routeClientes.put("/:id", authenticationToken, adminRole("admin ","vendedor", "gerente"), validateCliente, clientesController.updateClienteById);
+routeClientes.delete("/:id", authenticationToken, adminRole("admin", "gerente"), clientesController.removeCliente);
 // routeClientes.get("/email/:email", clientesController.getClientesByEmail);
 
 

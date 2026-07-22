@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv  from "dotenv";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
 import routeCompras from "./src/routes/comprasRoutes.js";
 import routeCategoria from "./src/routes/categoriaRoutes.js";
 import routeClientes from "./src/routes/clienteRoutes.js";
@@ -11,6 +12,7 @@ import userRouter from "./src/routes/userRoute.js";
 import loginRoute from "./src/routes/loginRoute.js";
 import enderecoRouter from "./src/routes/enderecoRoute.js";
 import uploadRoute from "./src/routes/uploadRoute.js";
+import swaaggerDocs from "./swagger.json" with {type: "json"};
 
 
 
@@ -26,6 +28,7 @@ app.use(cors({
   credentials: true,
 }));
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaaggerDocs));
 app.use(cookieParser());
 
 const PORT = process.env.PORT_SERVER || 3001;
@@ -45,7 +48,35 @@ app.listen(PORT, () => {
 });
 
 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import express from "express";
 // import cors from "cors";
 // import dotenv from "dotenv";

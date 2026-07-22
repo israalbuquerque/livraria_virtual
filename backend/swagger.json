@@ -1,0 +1,206 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Livraria Virtual API",
+        "version": "1.0.0",
+        "description": "API REST para gerenciamento de livros e clientes"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3001",
+            "description": "Servidor de desenvolvimento"
+        }
+    ],
+    "paths": {
+        "/auth/login":{
+            "post":{
+                "summary": "Login de Usuário",
+                "description": "Realiza login do usuário",
+                "tags": ["Autenticação"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Login"
+                            },
+                            "example":{
+                                
+                                    "user_email": "exemplo@gmail.com",
+                                    "user_password": "Senha123"
+                                
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "login realizado com sucesso"
+                    },
+                    "401":{
+                        "description": "Email ou senha inválidos"
+                    },
+                    "404":{
+                        "description": "Usuário nao encontrado"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                },  
+                
+                "headers": {
+                    "Set-Cookie":{
+                        "description": "Cookie para regresh token",
+                        "schema": {
+                            "type": "string",
+                            "example": "refreshToken="
+                        }
+                    }
+                }
+               
+            }
+        },
+        "/auth/refresh":{
+            "post":{
+                "summary": "Refresh token de usuário",
+                "description": "Realiza o refresh token do usuário",
+                "tags": ["Autenticação"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref":"#/components/schemas/refreshToken"
+                            },
+                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqb3NlX29saXZlaXJhQGdtYWlsLmNvbSIsInJvbGUiOiJnZXJlbnRlIiwiaWF0IjoxNzg0NjcyODMxLCJleHAiOjE3ODQ2NzM3MzF9.oShn6Rj3OUIE8YAj3GoGzAe_ONEvgpGR0QoEFNGAqj8"
+
+                        }
+                    }
+                },
+                
+                "responses": {
+                    "200":{
+                        "description": " Token de refresh enviado com sucesso",
+                        "headers": {
+                            "Set-Cookie":{
+                                "description": "Cookie para regresh token",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "refreshToken="
+                                }
+                            }
+                        }
+                    },
+                    "401":{
+                        "description": "Token de refresh inválido"
+                    },
+                    "400":{
+                        "description": "Senha inválida"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+               
+            }
+        }, 
+
+        "/auth/logout":{
+            "post": {
+                "summary": "logout de usuário",
+                "description": "realiza o logout do usuário",
+                "tags": ["Autenticação"],
+                "responses":{
+                    "200":{
+                        "description": "Logout realizado com sucesso"
+                    },
+                    "401":{
+                        "description": "Token de refresh inválido"
+
+                    },
+                    "500": {
+                        "description":"Erro interno do servidor"
+                    }
+                }
+            }
+        },
+
+        "/users":{
+            "get":{
+                "summary": "Buscar todos os usuários",
+                "description": "Busca todos os usuários",
+                "tags": ["Usuários"],
+                "security":[{
+                    "bearerAuth": []
+                }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Usuário retornado com sucesso",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Users"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components":{
+        "schemas": {
+            "Login": {
+                "type": "object",
+                "properties":{
+                    "user_email":{
+                        "type": "string"
+                        
+                    },
+                    "user_password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "refreshToken": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Users":{
+                "type": "object",
+                "properties": {
+                    "user_id":{
+                        "type":"integer"
+                    },
+                    "user_name":{
+                        "type": "string"
+                    },
+                    "user_email":{
+                        "type": "string"
+                    },
+                    "user_password":{
+                        "type": "string"
+                    },
+                    "user_role":{
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes":{
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
