@@ -35,8 +35,18 @@
                 },
                 "responses": {
                     "200":{
-                        "description": "login realizado com sucesso"
-                    },
+                        "description": "login realizado com sucesso",
+                         "headers": {
+                    "Set-Cookie":{
+                        "description": "Cookie para regresh token",
+                        "schema": {
+                            "type": "string",
+                            "example": "refreshToken="
+                            }
+                        }
+                    }
+                
+                },
                     "401":{
                         "description": "Email ou senha inválidos"
                     },
@@ -46,17 +56,9 @@
                     "500": {
                         "description": "Erro interno do servidor"
                     }
-                },  
-                
-                "headers": {
-                    "Set-Cookie":{
-                        "description": "Cookie para regresh token",
-                        "schema": {
-                            "type": "string",
-                            "example": "refreshToken="
-                        }
-                    }
                 }
+                
+               
                
             }
         },
@@ -72,7 +74,9 @@
                             "schema":{
                                 "$ref":"#/components/schemas/refreshToken"
                             },
-                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqb3NlX29saXZlaXJhQGdtYWlsLmNvbSIsInJvbGUiOiJnZXJlbnRlIiwiaWF0IjoxNzg0NjcyODMxLCJleHAiOjE3ODQ2NzM3MzF9.oShn6Rj3OUIE8YAj3GoGzAe_ONEvgpGR0QoEFNGAqj8"
+                            "example": {
+                                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqb3NlX29saXZlaXJhQGdtYWlsLmNvbSIsInJvbGUiOiJnZXJlbnRlIiwiaWF0IjoxNzg0NjcyODMxLCJleHAiOjE3ODQ2NzM3MzF9.oShn6Rj3OUIE8YAj3GoGzAe_ONEvgpGR0QoEFNGAqj8"
+                            }
 
                         }
                     }
@@ -138,6 +142,44 @@
                     "200":{
                         "description": "Usuário retornado com sucesso",
                         "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Users"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/user_id/{user_id}":{
+            "get":{
+                "summary": "Busca um usuário po ID",
+                "description": "Busca um usuário por ID",
+                "tags":["Usuários"],
+                "security":[
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "required": true,
+                        "description": "ID do usuário",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário retornado com sucesso!",
+                        "content": {
                             "application/json":{
                                 "schema":{
                                     "type": "array",

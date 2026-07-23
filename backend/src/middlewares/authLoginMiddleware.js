@@ -13,6 +13,12 @@ export const authenticationToken = (req, res, next)=>{
         });
     }
 
+    if(!getToken){
+        return res.status(401).json({
+            error: "Token não fornecido"
+        });
+    }
+
     jwt.verify(bearerToken, process.env.ACCESS_TOKEN_SECRET, 
         (error, user) =>{
             if (error) {
